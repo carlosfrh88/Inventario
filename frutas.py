@@ -26,6 +26,8 @@ def eliminar_fruta(inventario, fruta, cantidad):
             print(f"No hay suficientes {fruta} para eliminar.")
     else:
         print(f"{fruta} no está en el inventario.")
+
+
 def main():
     while True:
         print("\nOpciones:")
@@ -56,4 +58,4 @@ def main():
         else:
             print("Opción no válida. Intente de nuevo.")   
 if __name__ == "__main__":
-    mostrar_inventario(inventario)
+    main()
