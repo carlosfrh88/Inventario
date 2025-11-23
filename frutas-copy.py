@@ -1,46 +1,61 @@
-from flask import Flask, render_template, request, jsonify, reidrect, url_for
-from flas_sqlalchemy import SQLAlchemy
+from flask import Flask, render_template, request, jsonify, url_for
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://carlos:74097400Cr.@localhost/frutas_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://carlos:74097400Cr.@localhost/frutas'
 db = SQLAlchemy(app)
 
-class Fruta(db.Model):
+class Inventario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), unique=True, nullable=False)
     cantidad = db.Column(db.Integer, nullable=False)
 
 
 @app.route('/')
-def mostrar_inventario(inventario):
-    for fruta, cantidad in inventario.items():
-        print(f"{fruta}: {cantidad}")
+def mostrar_inventario():
+    fruta = Inventario.query.all()
+    return render_template('front-end.html', fruta=fruta)
 
-@app.route('/agregar', methods=['POST'])
-def agregar_fruta(inventario, fruta, cantidad):
-    if fruta in inventario:
-        inventario[fruta] += cantidad
-    else:
-        inventario[fruta] = cantidad
 
-@app.route('/vender', methods=['POST'])
-def vender_fruta(inventario, fruta, cantidad):
-    if fruta in inventario:
-        if inventario[fruta] >= cantidad:
-            inventario[fruta] -= cantidad
-        else:
-            print(f"No hay suficientes {fruta} para vender.")   
+if __name__ == "__main__":
+    app.run(debug=True)
 
-@app.route('/eliminar', methods=['POST'])
-def eliminar_fruta(inventario, fruta, cantidad):
-    if fruta in inventario:
-        if inventario[fruta] >= cantidad:
-            inventario[fruta] -= cantidad
-        else:
-            print(f"No hay suficientes {fruta} para eliminar.")
-    else:
-        print(f"{fruta} no está en el inventario.")
 
+#def mostrar_inventario(inventario):
+#    for fruta, cantidad in inventario.items():
+#        print(f"{fruta}: {cantidad}")
+
+#@app.route('/agregar', methods=['POST'])
+#def agregar_fruta(inventario, fruta, cantidad):
+#    if fruta in inventario:
+#        inventario[fruta] += cantidad
+#    else:
+#        inventario[fruta] = cantidad
+
+
+
+#######################################################################
+
+#@app.route('/vender', methods=['POST'])
+#def vender_fruta(inventario, fruta, cantidad):
+#    if fruta in inventario:
+#        if inventario[fruta] >= cantidad:
+#            inventario[fruta] -= cantidad
+#        else:
+#           print(f"No hay suficientes {fruta} para vender.")   
+
+#@app.route('/eliminar', methods=['POST'])
+#def eliminar_fruta(inventario, fruta, cantidad):
+#    if fruta in inventario:
+#        if inventario[fruta] >= cantidad:
+#            inventario[fruta] -= cantidad
+#        else:
+#            print(f"No hay suficientes {fruta} para eliminar.")
+#    else:
+#        print(f"{fruta} no está en el inventario.")
+
+
+######################################################################
 
 # # Esta función representa el punto de entrada principal del programa.
 # # Proporciona un menú interactivo para que el usuario pueda realizar
