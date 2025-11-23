@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inventario de Suministros</title>
+</head>
+<body>
+    <h1>Inventario</h1>
+    <ul>
+        {% for s in suministros %}
+            <li>{{ s.nombre }}: {{ s.cantidad }} unidades</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Agregar suministro</h2>
+    <form action="/agregar" method="post">
+        <input type="text" name="nombre" placeholder="Nombre">
+        <input type="number" name="cantidad" placeholder="Cantidad">
+        <button type="submit">Agregar</button>
+    </form>
+
+    <h2>Usar suministro</h2>
+    <form action="/usar" method="post">
+        <input type="text" name="nombre" placeholder="Nombre">
+        <input type="number" name="cantidad" placeholder="Cantidad">
+        <button type="submit">Usar</button>
+    </form>
+</body>
+</html>
