@@ -7,13 +7,13 @@
 <body>
     <h1>Inventario</h1>
     <ul>
-        {% for s in suministros %}
-            <li>{{ s.nombre }}: {{ s.cantidad }} unidades</li>
+        {% for s in item %}
+            <li>| {{s.id}} | {{ s.nombre }} | {{ s.cantidad }} unidades | </li>
         {% endfor %}
     </ul>
 
     <h2>Agregar suministro</h2>
-    <form action="/" method="post">
+    <form action="/agregar" method="POST">
         <input type="text" name="nombre" placeholder="Nombre">
         <input type="number" name="cantidad" placeholder="Cantidad">
         <button type="submit">Agregar</button>

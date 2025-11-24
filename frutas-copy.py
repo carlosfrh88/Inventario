@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, url_for
+from flask import Flask, render_template, request, jsonify, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -8,13 +8,24 @@ db = SQLAlchemy(app)
 class Inventario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), unique=True, nullable=False)
-    cantidad = db.Column(db.Integer, nullable=False)
+    cantidad = db.Column(db.Integer, default=0)
 
 
 @app.route('/')
 def mostrar_inventario():
-    fruta = Inventario.query.all()
-    return render_template('front-end.html', fruta=fruta)
+    item = Inventario.query.all()
+    return render_template('front-end.html', item=item)
+
+@app.route('/agregar', methods=['POST'])
+def agregar_suministro():
+    nombre = request.form['nombre']
+    cantidad = int(request.form['cantidad'])
+    
+    nuevo_suministro = Inventario(nombre=nombre, cantidad=cantidad)
+    db.session.add(nuevo_suministro)
+    db.session.commit()
+    return redirect(url_for('mostrar_inventario'))
+
 
 
 if __name__ == "__main__":
